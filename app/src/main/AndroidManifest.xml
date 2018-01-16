@@ -41,6 +41,8 @@
             android:name=".ContributorActivity"
             android:label="@string/title_activity_contributor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CapturePhoto" />
+        <activity android:name=".PreviewImageActivity"></activity>
     </application>
 
 </manifest>

@@ -19,6 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="Done" />
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorAccent"
+        android:text="ADD" />
 
 </RelativeLayout>

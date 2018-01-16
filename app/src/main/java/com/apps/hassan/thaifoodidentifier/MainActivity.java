@@ -29,10 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private FirebaseDatabase database;
-    private DatabaseReference databaseRef;
-    public String allPath = "";
-    public static ArrayList<String> directoryNameList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +37,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        database = FirebaseDatabase.getInstance();
-        getPathValue();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -116,8 +111,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void startCameraActivity(){
-        directoryNameList = stringProcess(allPath);
-        /*
+
+        // TODO Change to start camera
+
         new FinestWebView.Builder(this)
                 .theme(R.style.RedTheme)
                 .showUrl(false)
@@ -125,44 +121,9 @@ public class MainActivity extends AppCompatActivity
                 .swipeRefreshColorRes(R.color.redPrimaryDark)
                 .webViewSupportZoom(true)
                 .show("http://wongnai.com");
-                */
-        //Intent intent = new Intent(this, BrowseWebActivity.class);
+
+        //Intent intent = new Intent(this, CameraActivity.class);
         //startActivity(intent);
     }
 
-    private void getPathValue(){
-        Query retrivedData = database.getReference("directories").orderByValue();
-        retrivedData.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    allPath = String.valueOf(postSnapshot.getValue());
-                    Log.e("Path",allPath);
-                    //directoryNameList = stringProcess(allPath);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("Error", "loadPost:onCancelled", databaseError.toException());
-            }
-        });
-    }
-
-    public static ArrayList<String> stringProcess(String stringIn){
-        stringIn = stringIn.substring(17,(stringIn.length() - 2));
-        String[] stringList = stringIn.split(",");
-        List<String> itemList = Arrays.asList(stringList);
-        ArrayList<String> filterElement = new ArrayList<String>();
-
-        for (int counter = 0; counter < itemList.size(); counter++) {
-            String element = String.valueOf(itemList.get(counter));
-            String[] elementList = element.split("=");
-            filterElement.add(elementList[1]);
-        }
-        return filterElement;
-    }
-
-    public ArrayList<String> getArrayList(){
-        return  directoryNameList;
-    }
 }

@@ -12,11 +12,20 @@ public class ResultHolder {
     private static File video;
     private static Size nativeCaptureSize;
     private static long timeToCallback;
+    private static String className;
 
 
     public static void setImage(@Nullable byte[] image) {
 
         ResultHolder.image = image;
+    }
+
+    public static void setClassName(@Nullable String className){
+        ResultHolder.className = className;
+    }
+
+    public static String getClassName(){
+        return className;
     }
 
     @Nullable
