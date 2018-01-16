@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/materialGray"
+    tools:context="com.apps.hassan.thaifoodidentifier.CameraActivity">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <com.wonderkiln.camerakit.CameraView
+        android:id="@+id/camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        app:ckJpegQuality="50"
+        app:ckPinchToZoom="true"
+        app:ckFocus="tapWithMarker"
+        />
+
+    <ImageButton
+        android:id="@+id/btnDetectObject"
+        android:background="@drawable/ic_button_camera"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom|center"
+        android:visibility="visible" />
+
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

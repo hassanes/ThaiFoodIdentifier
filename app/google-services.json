@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "882722980689",
+    "firebase_url": "https://thai-food-identifier.firebaseio.com",
+    "project_id": "thai-food-identifier",
+    "storage_bucket": "thai-food-identifier.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882722980689:android:07e3b6d0ca9df0a6",
+        "android_client_info": {
+          "package_name": "com.apps.hassan.thaifoodidentifier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882722980689-stkerstj2gvlegjheejjorrc8e6qdd3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.hassan.thaifoodidentifier",
+            "certificate_hash": "bb0d9b359bd117b63b14068c14a5206123c2cf38"
+          }
+        },
+        {
+          "client_id": "882722980689-g6emsjf9d9li6g88iu72n07uja67hi2g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK8vPr0PfwOZSzY8PwgWFnjPHiSY66KuM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882722980689-g6emsjf9d9li6g88iu72n07uja67hi2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
