@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
     public void startCameraActivity(){
 
         // TODO Change to start camera
-
+        /*
         new FinestWebView.Builder(this)
                 .theme(R.style.RedTheme)
                 .showUrl(false)
@@ -121,9 +121,10 @@ public class MainActivity extends AppCompatActivity
                 .swipeRefreshColorRes(R.color.redPrimaryDark)
                 .webViewSupportZoom(true)
                 .show("http://wongnai.com");
+               */
 
-        //Intent intent = new Intent(this, CameraActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
     }
 
 }

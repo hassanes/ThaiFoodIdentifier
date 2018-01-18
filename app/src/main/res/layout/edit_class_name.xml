@@ -38,8 +38,4 @@
             android:textColor="@color/colorAccent"
             android:text="Submit" />
 
-
-
-
-
     </RelativeLayout>

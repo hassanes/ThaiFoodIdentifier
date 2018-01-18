@@ -28,6 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,15 +47,10 @@ public class ContributorActivity extends AppCompatActivity {
     private String editClassName_value;
     public FirebaseDatabase database;
     public DatabaseReference databaseRef;
-    public String allPath = "";
-    public String key;
-    private Button classAdd;
-    // private TextView classTitle;
-    // public Button addImage;
     private String className = " ";
     private String classNameIn;
-    private String classNameFromModel;
-    public static ArrayList<String> directoryNameList;
+    private AVLoadingIndicatorView avi;
+    private int count = 0;
 
     AlertDialog.Builder builder;
     LayoutInflater layoutinflater;
@@ -67,16 +63,28 @@ public class ContributorActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setTitle("Contribution");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            }
+        });
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getInstance().getReference();
 
         database = FirebaseDatabase.getInstance();
-        getPathValue();
 
 
         fab = (FloatingActionButton) findViewById(R.id.fabAdd);
         layoutFabAddClass = (LinearLayout) this.findViewById(R.id.layoutFabAddClass);
         layoutFabAddImage = (LinearLayout) this.findViewById(R.id.layoutFabAddImage);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
+        avi.setIndicator("Loading ... ");
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +137,40 @@ public class ContributorActivity extends AppCompatActivity {
             }
         });
         */
+        DatabaseReference directoryRef = database.getReference("directories").child("directory_name");
 
+        directoryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                count++;
+
+                startAnim();
+
+                if(count >= dataSnapshot.getChildrenCount()){
+                    stopAnim();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         String filePath = storageRef.getPath();
@@ -211,93 +252,25 @@ public class ContributorActivity extends AppCompatActivity {
         databaseRef.push().setValue(editClassName_value);
 
     }
-/*
-    private void updateUI() {
-
-        if (mAdapter == null) {
-            mAdapter = new ArrayAdapter<>(this, R.layout.item_class, R.id.class_title, getArrayList());
-            classListView.setAdapter(mAdapter);
-            Log.e("Update UI", "mAdapter == null");
-        } else {
-            mAdapter.clear();
-            mAdapter.addAll(getArrayList());
-            mAdapter.notifyDataSetChanged();
-            //Empty array list
-            Log.e("getArrayList",String.valueOf(getArrayList()));
-            Log.e("Update UI", "mAdapter != null");
-        }
-
-    }
-    */
-
-    private void getPathValue(){
-
-        /*
-        adapter = new FirebaseListAdapter<Directory>(options) {
-            @Override
-            protected void populateView(View v, Directory model, int position) {
-
-                TextView classTitle = v.findViewById(R.id.class_title);
-                classTitle.setText(model.getDirectory_name());
-                classListView = (ListView) findViewById(R.id.class_list_view);
-                classListView.setAdapter(adapter);
-            }
-        };
-        */
-        // classListView = (ListView) findViewById(R.id.class_list_view);
-        // classListView.setAdapter(adapter);
-
-        /*
-        databaseRef = database.getReference("directories");
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-
-                    //key = String.valueOf(postSnapshot.getKey());
-                    allPath = String.valueOf(postSnapshot.getValue());
-                    Log.e("Path",allPath);
-                    //directoryNameList = stringProcess(allPath);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("Error", "loadPost:onCancelled", databaseError.toException());
-            }
-        });
-        */
-
-
-
-
-    }
-
-    public static ArrayList<String> stringProcess(String stringIn){
-        stringIn = stringIn.substring(17,(stringIn.length() - 2));
-        String[] stringList = stringIn.split(",");
-        List<String> itemList = Arrays.asList(stringList);
-        ArrayList<String> filterElement = new ArrayList<String>();
-
-        for (int counter = 0; counter < itemList.size(); counter++) {
-            String element = String.valueOf(itemList.get(counter));
-            String[] elementList = element.split("=");
-            filterElement.add(elementList[1]);
-        }
-        return filterElement;
-    }
-
-    public ArrayList<String> getArrayList(){
-        return  directoryNameList;
-    }
 
     public void setClassName(String name){
         classNameIn = name;
     }
 
-    public String getClassName(){
-        return classNameIn;
+    void startAnim(){
+        avi.smoothToShow();
     }
 
+    void stopAnim(){
+        avi.smoothToHide();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onStart() {

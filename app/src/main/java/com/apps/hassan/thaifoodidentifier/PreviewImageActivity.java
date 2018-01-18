@@ -6,15 +6,25 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.daimajia.numberprogressbar.OnProgressBarListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -34,8 +44,8 @@ public class PreviewImageActivity extends AppCompatActivity {
     @BindView(R.id.imageViewResult)
     ImageView imageViewResult;
 
-    @BindView(R.id.textViewResult)
-    TextView textViewResult;
+    //@BindView(R.id.textViewResult)
+    //TextView textViewResult;
 
     @BindView(R.id.btn_upload)
     Button btnUpload;
@@ -46,9 +56,13 @@ public class PreviewImageActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageRef, imageRef;
     private Bitmap bitmap;
+    private NumberProgressBar bnp;
 
-    private ContributorActivity contributorActivity = new ContributorActivity();
     private String className;
+
+    AlertDialog.Builder builder;
+    LayoutInflater layoutinflater;
+    AlertDialog alertdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,7 @@ public class PreviewImageActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getInstance().getReference();
 
+        bnp = (NumberProgressBar)findViewById(R.id.number_progress_bar);
 
 
         byte[] jpeg = ResultHolder.getImage();
@@ -69,6 +84,14 @@ public class PreviewImageActivity extends AppCompatActivity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.RGB_565;
             bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length, options);
+
+            builder = new AlertDialog.Builder(PreviewImageActivity.this);
+            layoutinflater = getLayoutInflater();
+            View dView = layoutinflater.inflate(R.layout.uploading_progress,null);
+            builder.setCancelable(true);
+            builder.setView(dView);
+            bnp = (NumberProgressBar) dView.findViewById(R.id.number_progress_bar);
+            alertdialog = builder.create();
 
             if (bitmap == null) {
                 finish();
@@ -88,12 +111,48 @@ public class PreviewImageActivity extends AppCompatActivity {
                     }
                     Log.e("Class name", className);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                     byte[] data = baos.toByteArray();
                     imageRef = storageRef.child(className + "/" + UUID.nameUUIDFromBytes(data).toString() + ".jpg");
+                    alertdialog.show();
 
+                    UploadTask uploadTask = imageRef.putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "Upload failed :(";
+                            int duration = Toast.LENGTH_LONG;
 
-                    imageRef.putBytes(data);
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            alertdialog.cancel();
+
+                            Context context = getApplicationContext();
+                            CharSequence text = "Upload completed :)";
+
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+
+                            backToContributor();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            int progressInt = (int) progress;
+                            Log.e("Upload is ", String.valueOf(progress) + "% done");
+
+                            bnp.incrementProgressBy(progressInt);
+
+                        }
+                    });
                 }
             });
 
@@ -107,33 +166,11 @@ public class PreviewImageActivity extends AppCompatActivity {
         }
     }
 
+
     private void backToContributor(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ContributorActivity.class);
         startActivity(intent);
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage){
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File myPath = new File(directory,"profile.jpg");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(myPath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 20, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
-    }
 
 }

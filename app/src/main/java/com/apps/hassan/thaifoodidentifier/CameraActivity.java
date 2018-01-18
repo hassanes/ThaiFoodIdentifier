@@ -48,6 +48,7 @@ public class CameraActivity extends AppCompatActivity {
     private int cameraMethod = CameraKit.Constants.METHOD_STANDARD;
     private boolean cropOutput = false;
 
+    // TODO Move location logic to MainActivity
     private FusedLocationProviderClient mFusedLocationClient;
     private static final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1;
     public double usrLatitude, usrLongitude = 0;
@@ -99,8 +100,6 @@ public class CameraActivity extends AppCompatActivity {
         ResultHolder.setImage(jpeg);
         ResultHolder.setNativeCaptureSize(camera.getCaptureSize());
 
-        // TODO edit this section to make it work, Find out what getContext() do
-        // For now I'm using "this" instead of context
 
         Log.w("Info","Enter imageCaptured()");
 

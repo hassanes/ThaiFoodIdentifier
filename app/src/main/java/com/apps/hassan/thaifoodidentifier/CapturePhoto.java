@@ -31,7 +31,7 @@ public class CapturePhoto extends AppCompatActivity {
     ImageButton btnDetectObject;
 
     private int cameraMethod = CameraKit.Constants.METHOD_STANDARD;
-    private boolean cropOutput = false;
+    private boolean cropOutput = true;
 
 
     @Override
@@ -39,6 +39,7 @@ public class CapturePhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_photo);
         ButterKnife.bind(this);
+        getSupportActionBar().setTitle("Capture food image");
 
         camera.setMethod(cameraMethod);
         camera.setCropOutput(cropOutput);

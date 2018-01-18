@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_contributor"
             android:icon="@drawable/ic_supervisor_account_black_24dp"
-            android:title="Contributor" />
+            android:title="Contribution" />
     </group>
 
 </menu>
