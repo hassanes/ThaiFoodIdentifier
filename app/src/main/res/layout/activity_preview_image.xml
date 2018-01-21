@@ -4,65 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.apps.hassan.thaifoodidentifier.DisplayResultActivity">
-    
-    <LinearLayout
+    tools:context="com.apps.hassan.thaifoodidentifier.PreviewImageActivity">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:src="@drawable/ic_close_black_24dp"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@android:color/white"
+            app:fabSize="mini"/>
 
         <ImageView
             android:id="@+id/imageViewResult"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:scaleType="centerCrop" />
 
-        <TextView
-            android:text="Do you want to upload this image?"
-            android:id="@+id/txtUpload"
-            android:layout_width="match_parent"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingVertical="5dp"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_action_upload_button" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/btn_upload"
-                android:background="@android:color/transparent"
-                android:textColor="@color/materialGray"
-                android:text="Cancel"/>
-
-            <Button
-                android:id="@+id/btn_upload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@android:color/transparent"
-                android:textColor="@color/colorAccent"
-                android:text="Upload"/>
-
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-
-
-
-
-
-<!--
-    </LinearLayout>
-    -->
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

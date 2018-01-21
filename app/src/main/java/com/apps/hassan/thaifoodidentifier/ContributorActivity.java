@@ -1,7 +1,12 @@
 package com.apps.hassan.thaifoodidentifier;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
@@ -72,6 +78,29 @@ public class ContributorActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
+
+
+        if (!isNetworkAvailable()) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please connect the internet.")
+                    .setTitle("Connection not available !")
+                    .setPositiveButton("WIFI Setting", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS );
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            backToMainActivity();
+                        }
+                    });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getInstance().getReference();
@@ -239,7 +268,7 @@ public class ContributorActivity extends AppCompatActivity {
     }
     //Opens FAB submenus
     private void openSubMenusFab(){
-        layoutFabAddImage.setVisibility(View.VISIBLE);
+        //layoutFabAddImage.setVisibility(View.VISIBLE);
         layoutFabAddClass.setVisibility(View.VISIBLE);
         fab.setImageResource(R.drawable.ic_close_black_24dp);
         fabExpanded = true;
@@ -268,8 +297,19 @@ public class ContributorActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
+        backToMainActivity();
+    }
+
+    public void backToMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

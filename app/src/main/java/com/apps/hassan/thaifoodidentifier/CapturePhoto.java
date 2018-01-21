@@ -3,8 +3,11 @@ package com.apps.hassan.thaifoodidentifier;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +30,11 @@ public class CapturePhoto extends AppCompatActivity {
     @BindView(R.id.camera)
     CameraView camera;
 
-    @BindView(R.id.btnDetectObject)
-    ImageButton btnDetectObject;
+    @BindView(R.id.btn_capture)
+    FloatingActionButton btn_capture;
 
     private int cameraMethod = CameraKit.Constants.METHOD_STANDARD;
-    private boolean cropOutput = true;
+    private boolean cropOutput = false;
 
 
     @Override
@@ -44,7 +47,7 @@ public class CapturePhoto extends AppCompatActivity {
         camera.setMethod(cameraMethod);
         camera.setCropOutput(cropOutput);
 
-        btnDetectObject.setOnClickListener(new View.OnClickListener() {
+        btn_capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 camera.captureImage(new CameraKitEventCallback<CameraKitImage>() {
@@ -78,9 +81,6 @@ public class CapturePhoto extends AppCompatActivity {
         ResultHolder.setImage(jpeg);
         ResultHolder.setNativeCaptureSize(camera.getCaptureSize());
 
-        // TODO edit this section to make it work, Find out what getContext() do
-        // For now I'm using "this" instead of context
-
         Log.w("Info","Enter imageCaptured()");
 
         Intent intent = new Intent(getApplicationContext(), PreviewImageActivity.class);
@@ -88,6 +88,12 @@ public class CapturePhoto extends AppCompatActivity {
         getApplicationContext().startActivity(intent);
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ContributorActivity.class);
+        startActivity(intent);
     }
 
 }

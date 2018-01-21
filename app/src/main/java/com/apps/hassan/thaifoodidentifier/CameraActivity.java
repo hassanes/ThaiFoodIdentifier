@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -43,16 +44,10 @@ public class CameraActivity extends AppCompatActivity {
     CameraView camera;
 
     @BindView(R.id.btnDetectObject)
-    ImageButton btnDetectObject;
+    FloatingActionButton btnDetectObject;
 
     private int cameraMethod = CameraKit.Constants.METHOD_STANDARD;
     private boolean cropOutput = false;
-
-    // TODO Move location logic to MainActivity
-    private FusedLocationProviderClient mFusedLocationClient;
-    private static final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1;
-    public double usrLatitude, usrLongitude = 0;
-
 
 
     @Override
@@ -60,7 +55,6 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_camera);
-        activateGetLocation();
         ButterKnife.bind(this);
 
         camera.setMethod(cameraMethod);
@@ -110,32 +104,5 @@ public class CameraActivity extends AppCompatActivity {
 
     }
 
-    public void activateGetLocation(){
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-
-            ActivityCompat.requestPermissions( this, new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
-        }
-
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            usrLatitude = location.getLatitude();
-                            usrLongitude = location.getLongitude();
-                            Log.e("Location Latitude", String.valueOf(usrLatitude));
-                            Log.e("Location Longitude", String.valueOf(usrLongitude));
-                        }
-
-                        else {
-                            Log.e("Location", "Location is null");
-                        }
-                    }
-                });
-    }
 
 }

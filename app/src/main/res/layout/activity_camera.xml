@@ -21,14 +21,17 @@
         app:ckFocus="tapWithMarker"
         />
 
-    <ImageButton
-        android:id="@+id/btnDetectObject"
-        android:background="@drawable/ic_button_camera"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="bottom|center"
-        android:visibility="visible" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnDetectObject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="20dp"
+            app:backgroundTint="@color/materialGray"
+            app:fabSize="auto"
+            android:elevation="0dp"
+            android:src="@drawable/ic_button_camera"
+            />
 
     </FrameLayout>
 

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,14 +46,11 @@ public class PreviewImageActivity extends AppCompatActivity {
     @BindView(R.id.imageViewResult)
     ImageView imageViewResult;
 
-    //@BindView(R.id.textViewResult)
-    //TextView textViewResult;
-
     @BindView(R.id.btn_upload)
-    Button btnUpload;
+    FloatingActionButton btnUpload;
 
     @BindView(R.id.btn_cancel)
-    Button btnCancel;
+    FloatingActionButton btnCancel;
 
     private FirebaseStorage storage;
     private StorageReference storageRef, imageRef;
@@ -70,6 +69,8 @@ public class PreviewImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview_image);
         ButterKnife.bind(this);
 
+        getSupportActionBar().setTitle("Upload this image ?");
+
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getInstance().getReference();
 
@@ -83,6 +84,8 @@ public class PreviewImageActivity extends AppCompatActivity {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inSampleSize = calculateInSampleSize(options, 2064,1161);
+            options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length, options);
 
             builder = new AlertDialog.Builder(PreviewImageActivity.this);
@@ -136,7 +139,7 @@ public class PreviewImageActivity extends AppCompatActivity {
                             Context context = getApplicationContext();
                             CharSequence text = "Upload completed :)";
 
-                            int duration = Toast.LENGTH_SHORT;
+                            int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
 
@@ -166,10 +169,38 @@ public class PreviewImageActivity extends AppCompatActivity {
         }
     }
 
+    private int calculateInSampleSize(BitmapFactory.Options options, int i, int i1) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > i || width > i1) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= i
+                    && (halfWidth / inSampleSize) >= i1) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+
+    }
+
 
     private void backToContributor(){
         Intent intent = new Intent(this, ContributorActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        backToContributor();
     }
 
 

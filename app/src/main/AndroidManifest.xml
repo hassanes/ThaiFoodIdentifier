@@ -3,6 +3,7 @@
     package="com.apps.hassan.thaifoodidentifier">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,7 +17,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,11 +28,6 @@
             android:theme="@style/AppThemeCamera"/>
         <activity android:name=".DisplayResultActivity" />
         <activity
-            android:name=".BrowseWebActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="sensor"
-            android:theme="@style/FinestWebViewTheme.Light" />
-        <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensor"
@@ -43,8 +38,7 @@
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CapturePhoto"
-            android:noHistory="true" />
+            android:name=".CapturePhoto" />
         <activity
             android:name=".PreviewImageActivity"
             android:noHistory="true">

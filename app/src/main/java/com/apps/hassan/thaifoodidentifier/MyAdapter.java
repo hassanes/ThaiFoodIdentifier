@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by hassan on 1/18/18.
- */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ClassifyResultViewHolder> {
 
@@ -25,8 +22,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ClassifyResultView
         ClassifyResultViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv);
-            className = (TextView) itemView.findViewById(R.id.person_name);
-            classConfidential = (TextView) itemView.findViewById(R.id.person_age);
+            className = (TextView) itemView.findViewById(R.id.class_name);
+            classConfidential = (TextView) itemView.findViewById(R.id.confidential_percentage);
         }
 
     }
