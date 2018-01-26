@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ClassifyResultViewHolder> {
@@ -18,12 +20,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ClassifyResultView
         CardView cv;
         TextView className;
         TextView classConfidential;
+        Button findRestaurant;
 
         ClassifyResultViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv);
             className = (TextView) itemView.findViewById(R.id.class_name);
             classConfidential = (TextView) itemView.findViewById(R.id.confidential_percentage);
+            findRestaurant = (Button) itemView.findViewById(R.id.find_restaurant);
         }
 
     }
@@ -49,8 +53,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ClassifyResultView
 
     @Override
     public void onBindViewHolder(ClassifyResultViewHolder classifyResultViewHolder, int i) {
-        classifyResultViewHolder.className.setText(resultList.get(i).name);
-        classifyResultViewHolder.classConfidential.setText(resultList.get(i).confidential);
+        if(!Objects.equals(resultList.get(i).name, "Unknown")){
+            classifyResultViewHolder.className.setText(resultList.get(i).name);
+            classifyResultViewHolder.classConfidential.setText(resultList.get(i).confidential);
+            classifyResultViewHolder.findRestaurant.setVisibility(View.VISIBLE);
+        }
+        else {
+            classifyResultViewHolder.className.setText(resultList.get(i).name);
+            classifyResultViewHolder.classConfidential.setText(resultList.get(i).confidential);
+        }
+
     }
 
     @Override

@@ -39,6 +39,7 @@
             android:textAllCaps="false"
             android:textColor="@color/colorAccent"
             android:layout_alignParentEnd="true"
+            android:visibility="invisible"
             android:background="@android:color/transparent"/>
 
     </RelativeLayout>

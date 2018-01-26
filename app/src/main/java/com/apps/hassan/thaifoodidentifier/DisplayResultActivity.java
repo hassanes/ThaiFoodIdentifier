@@ -1,5 +1,6 @@
 package com.apps.hassan.thaifoodidentifier;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -87,7 +89,7 @@ public class DisplayResultActivity extends AppCompatActivity {
                 Log.e("Latitude", latitude);
                 Log.e("Longitude", longitude);
 
-                if (result != "Unknown"){
+                if (!Objects.equals(result, "Unknown")){
                     new FinestWebView.Builder(DisplayResultActivity.this)
                             .theme(R.style.RedTheme)
                             .showUrl(false)
@@ -98,6 +100,8 @@ public class DisplayResultActivity extends AppCompatActivity {
                 }
 
                 else {
+                    showToast("Cannot find 'Unknown' dish, please try again.");
+                    Log.e("DisplayResultAcitivity", "Result is unknown");
                     Log.e("Result", result);
                 }
 
@@ -182,6 +186,16 @@ public class DisplayResultActivity extends AppCompatActivity {
     private void initializeAdapter(){
         MyAdapter adapter = new MyAdapter(resultList);
         rv.setAdapter(adapter);
+    }
+
+    private void showToast(String textIn){
+
+        Context context = getApplicationContext();
+        String text = textIn;
+        // CharSequence text = "Upload completed :)";
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
 /*
