@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        app:ckJpegQuality="50"
+        app:ckJpegQuality="100"
         app:ckPinchToZoom="true"
         app:ckFocus="tapWithMarker"
         />

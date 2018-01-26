@@ -33,8 +33,8 @@ public class CapturePhoto extends AppCompatActivity {
     @BindView(R.id.btn_capture)
     FloatingActionButton btn_capture;
 
-    private int cameraMethod = CameraKit.Constants.METHOD_STANDARD;
-    private boolean cropOutput = false;
+    private int cameraMethod = CameraKit.Constants.METHOD_STILL;
+    private boolean cropOutput = true;
 
 
     @Override

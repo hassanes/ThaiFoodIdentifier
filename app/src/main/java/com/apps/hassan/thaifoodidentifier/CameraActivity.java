@@ -46,8 +46,8 @@ public class CameraActivity extends AppCompatActivity {
     @BindView(R.id.btnDetectObject)
     FloatingActionButton btnDetectObject;
 
-    private int cameraMethod = CameraKit.Constants.METHOD_STANDARD;
-    private boolean cropOutput = false;
+    private int cameraMethod = CameraKit.Constants.METHOD_STILL;
+    private boolean cropOutput = true;
 
 
     @Override
